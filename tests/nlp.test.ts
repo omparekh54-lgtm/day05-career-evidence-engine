@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';import test from 'node:test';import {analyzeEvidence,extractSkills,parseRequirements,safeBulletReview} from '../lib/nlp.ts';
+const resume=`EXPERIENCE\nAnalyst at Example. Used Python and SQL to analyze credit risk data and built Power BI dashboards for stakeholders. Presented portfolio monitoring findings to senior management.\nEDUCATION\nBSc Finance\nEmail me@example.com`;
+const jd=`Requirements\n• Strong Python and SQL skills.\n• Experience with credit risk and portfolio monitoring.\n• Minimum 5 years professional experience required.\nPreferred\n• AWS experience preferred.\nResponsibilities\n• Present risk findings to senior stakeholders.`;
+test('extracts explicit skills',()=>{const s=extractSkills(resume);assert.ok(s.includes('python'));assert.ok(s.includes('sql'));assert.ok(s.includes('credit risk'))});
+test('parses multiple requirement types',()=>{const r=parseRequirements(jd);assert.ok(r.length>=4);assert.ok(r.some(x=>x.kind==='preferred'))});
+test('analysis preserves blockers and evidence',()=>{const a=analyzeEvidence(resume,jd);assert.ok(a.matches.some(m=>m.gap==='covered'));assert.ok(a.matches.some(m=>m.gap==='hard_blocker'));assert.ok(a.mustCoverage>0&&a.mustCoverage<=1)});
+test('claim risk flags unsupported quantified leadership claim',()=>{const r=safeBulletReview('Led 12 analysts and increased revenue by 40%',resume);assert.equal(r.status,'Unsupported')});
