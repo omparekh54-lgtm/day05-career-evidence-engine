@@ -5,3 +5,4 @@ test('extracts explicit skills',()=>{const s=extractSkills(resume);assert.ok(s.i
 test('parses multiple requirement types',()=>{const r=parseRequirements(jd);assert.ok(r.length>=4);assert.ok(r.some(x=>x.kind==='preferred'))});
 test('analysis preserves blockers and evidence',()=>{const a=analyzeEvidence(resume,jd);assert.ok(a.matches.some(m=>m.gap==='covered'));assert.ok(a.matches.some(m=>m.gap==='hard_blocker'));assert.ok(a.mustCoverage>0&&a.mustCoverage<=1)});
 test('claim risk flags unsupported quantified leadership claim',()=>{const r=safeBulletReview('Led 12 analysts and increased revenue by 40%',resume);assert.equal(r.status,'Unsupported')});
+test('claim risk cannot hide invented metric inside mostly copied wording',()=>{const source='Analyzed revenue reporting and presented findings to management.';const r=safeBulletReview('Analyzed revenue reporting and presented findings to management, increasing revenue by 40%',source);assert.equal(r.status,'Unsupported')});
