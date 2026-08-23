@@ -2,6 +2,9 @@
 
 **100 Days of Data Science · Day 05**
 
+**Live product:** https://day05-career-evidence-engine.vercel.app  
+**Repository:** https://github.com/omparekh54-lgtm/day05-career-evidence-engine
+
 Career Evidence Engine is a privacy-first resume-to-role intelligence product built around one rule:
 
 > **Tailor aggressively, but never invent experience.**
@@ -24,6 +27,7 @@ Upload PDF/DOCX/TXT → extract resume locally → paste target job description 
 - Weighted coverage prioritizes must-have requirements over preferred ones.
 - Gap classifier distinguishes: covered, evidence gap, terminology gap, learnable gap and potential hard blocker.
 - Claim-risk checks compare rewritten bullets back to the source resume and treat new quantified/leadership claims conservatively.
+- An adversarial test specifically verifies that a copied source bullet cannot hide a newly invented percentage result and still be marked supported.
 
 ## Confidence & honesty layer
 
@@ -47,9 +51,25 @@ Resume PDF/DOCX/TXT extraction and analysis happen in the browser. There is no a
 
 Clear upload/paste onboarding, optional sample role, evidence-first dashboard, recruiter 30-second scan, requirement drilldown, source-proof cards, claim-risk detector, ATS structure checks, portfolio-proof planner, exportable application pack, responsive layout and reduced-motion support.
 
+## Verified production checks
+
+- 5 / 5 NLP and evidence-integrity tests pass locally.
+- Explicit skill extraction verified.
+- Requirement-type parsing verified.
+- Potential formal blocker preservation verified.
+- Unsupported quantified leadership claims verified.
+- Adversarial mostly-copied bullet + invented `40%` metric verified as unsupported.
+- Next.js 16 production compilation passed on Vercel.
+- TypeScript checking passed on Vercel.
+- Production deployment state is `READY`.
+- Public production root returns HTTP 200.
+- Current Vercel runtime scan reports no runtime errors.
+
+The first cloud builds also exposed real integration issues before release: a React type dependency conflict, a missing Mammoth browser declaration, a PDF.js API mismatch and TypeScript test-import configuration. These were fixed explicitly rather than bypassing dependency or type checks.
+
 ## Tests
 
-`npm test` verifies explicit skill extraction, requirement parsing, blocker/evidence classification and unsupported quantified-claim detection. `npm run build` performs the production Next.js/TypeScript compilation.
+Run `npm test` and `npm run build`.
 
 ## Honest limitations
 
